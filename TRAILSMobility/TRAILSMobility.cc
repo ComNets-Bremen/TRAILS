@@ -21,7 +21,7 @@
  *
  */
 
-#include "TraceBasedProbabilisticMobility.h"
+#include "TRAILSMobility.h"
 
 namespace inet {
 
