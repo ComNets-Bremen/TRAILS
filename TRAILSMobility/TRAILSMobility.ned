@@ -19,12 +19,15 @@
 //
 // author : Anas bin Muslim (anas1@uni-bremen.de)
 //
+// Change History:
+// Asanga Udugama (adu@comnets.uni-bremen.de)
+// - name change
 //
 
 package inet.mobility.single;
 import inet.mobility.base.MovingMobilityBase;
 
-simple TRAILSMobility extends MovingMobilityBase {
+simple TRAILSMobility extends MovingMobilityBase{
     parameters:
         
         bool initFromDisplayString = default(true);

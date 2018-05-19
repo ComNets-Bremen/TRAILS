@@ -19,6 +19,10 @@
 *
 * @author : Anas bin Muslim (anas1@uni-bremen.de)
 *
+* Change History:
+* Asanga Udugama (adu@comnets.uni-bremen.de)
+* - name change
+* - use of OMNeT's RNG 
 */
 
 #ifndef INET_MOBILITY_SINGLE_TRAILSMOBILITY_H_
@@ -49,6 +53,8 @@ protected:
     double speed;
 
     std::string sql;
+    int usedRNG;
+
 
 public:
     bool speedFromMap;
@@ -65,6 +71,8 @@ public:
     Coord previousPOI;
     Coord target;
     Coord finalPOI;
+
+    int getIntUniform(int start, int end);
 
 protected:
     virtual int numInitStages() const override { return NUM_INIT_STAGES; }

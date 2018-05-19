@@ -19,6 +19,10 @@
  *
  * @author : Anas bin Muslim (anas1@uni-bremen.de)
  *
+ * Change History:
+ * Asanga Udugama (adu@comnets.uni-bremen.de)
+ * - name change
+ * - use of OMNeT's RNG 
  */
 
 #include "TRAILSMobility.h"
@@ -45,6 +49,7 @@ void TRAILSMobility::initialize(int stage){
 
     // Open the connection to mobility map database
     if (stage == 0){
+	usedRNG = par("usedRNG");
         if (sqlWrapper::open == false){
             rc = sqlWrapper::openDB();
         }
@@ -68,7 +73,7 @@ void TRAILSMobility::initialize(int stage){
 }
 
 void TRAILSMobility::setInitialPosition(){
-    sql = "SELECT * from POIS where ID = " + std::to_string(intuniform(1,noOfPOIS));
+    sql = "SELECT * from POIS where ID = " + std::to_string(intuniform(1,noOfPOIS, usedRNG));
 
     rc = sqlWrapper::getInitialPOI(strdup(sql.c_str()), this);
 
@@ -228,6 +233,12 @@ Coord TRAILSMobility::setTargetPoint(TRAILSMobility * tbm){
             return finalPOI;
         }
     }
+}
+
+int TRAILSMobility::getIntUniform(int start, int end) {
+    int random = intuniform(start, end, usedRNG);
+
+    return random;
 }
 
 TRAILSMobility::~TRAILSMobility() {

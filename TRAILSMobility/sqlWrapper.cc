@@ -19,6 +19,10 @@
  *
  * @author : Anas bin Muslim (anas1@uni-bremen.de)
  *
+ * Change History:
+ * Asanga Udugama (adu@comnets.uni-bremen.de)
+ * - name change
+ * - use of OMNeT's RNG 
  */
 
 #include "TRAILSMobility.h"
@@ -67,20 +71,20 @@ int sqlWrapper::openDB(){
 }
 
 int sqlWrapper::getPOIID(char * sql, void * pntr){
-    TraceBasedProbabilisticMobility * m = (TraceBasedProbabilisticMobility *) pntr;
+    TRAILSMobility * m = (TRAILSMobility *) pntr;
     rc = sqlite3_exec(DB, sql, getPOIID_callback, (void*) pntr, &zErrMsg);
     return rc;
 }
 
 int sqlWrapper::getPOIID_callback(void * pntr, int count, char ** data, char ** colName){
-    TraceBasedProbabilisticMobility * m = (TraceBasedProbabilisticMobility *) pntr;
+    TRAILSMobility * m = (TRAILSMobility *) pntr;
     m->tempPOIID = atoi(data[0]);
     return 0;
 }
 
 int sqlWrapper::getEdge(void * pntr, int src, int dest, int idx){
 
-    TraceBasedProbabilisticMobility * m = (TraceBasedProbabilisticMobility *) pntr;
+    TRAILSMobility * m = (TRAILSMobility *) pntr;
 
     sql = "SELECT * FROM EDGES WHERE START_POI_ID = " + std::to_string(src)\
             + " and END_POI_ID = " + std::to_string(dest) + " and ID = " + std::to_string(idx);
@@ -92,7 +96,7 @@ int sqlWrapper::getEdge(void * pntr, int src, int dest, int idx){
 
 int sqlWrapper::getEdge_callback(void * unused, int count, char** data, char ** colName){
 
-    TraceBasedProbabilisticMobility * m = (TraceBasedProbabilisticMobility *) unused;
+    TRAILSMobility * m = (TRAILSMobility *) unused;
 
     m->target.x = atoi(data[count-3]);
     m->target.y = atoi(data[count-2]);
@@ -119,7 +123,7 @@ int sqlWrapper::countPOIS(void * pntr){
 
 int sqlWrapper::countPOIS_callback(void * pntr, int count, char ** data, char ** colName){
 
-    TraceBasedProbabilisticMobility * m = (TraceBasedProbabilisticMobility *) pntr;
+    TRAILSMobility * m = (TRAILSMobility *) pntr;
     m->noOfPOIS = atoi(data[0]);
 
     return 0;
@@ -134,7 +138,7 @@ int sqlWrapper::getInitialPOI(char * sql, void * pntr){
 
 int sqlWrapper::initialPOI_callback(void * pntr, int count, char ** data, char ** colName){
 
-    TraceBasedProbabilisticMobility * m = (TraceBasedProbabilisticMobility *) pntr;
+    TRAILSMobility * m = (TRAILSMobility *) pntr;
     m->tempPOIID = atoi(data[0]);
     m->previousPOI.x = atoi(data[1]);
     m->previousPOI.y = atoi(data[2]);
@@ -145,13 +149,21 @@ int sqlWrapper::initialPOI_callback(void * pntr, int count, char ** data, char *
 
 int sqlWrapper::getDestination(char * query, void * pntr){
 
-    TraceBasedProbabilisticMobility * m = (TraceBasedProbabilisticMobility *) pntr;
+    TRAILSMobility * m = (TRAILSMobility *) pntr;
     targetPOIs.clear();
 
     rc = sqlite3_exec(DB, query, getAllDestinations_callback, (void*) pntr, &zErrMsg);
     int random;
     if (targetPOIs.size() > 0){
-        random = rand() % targetPOIs.size();
+        random = m->getIntUniform(0, (targetPOIs.size() - 1));
+
+        //if (targetPOIs.size() > 1) {
+        //    //random = rand() % targetPOIs.size();
+        //    random = intuniform(0, (targetPOIs.size() - 1), usedRNG);
+        //    std::cout << "size A done " << "\n";
+        //} else {
+        //    random = 0;
+        //}
         m->tempPOIID = targetPOIs[random];
 
         sql = "SELECT PX, PY, PZ FROM POIS WHERE ID = " + std::to_string(targetPOIs[random]);
@@ -175,7 +187,7 @@ int sqlWrapper::getAllDestinations_callback(void * pntr, int count, char ** data
 }
 
 int sqlWrapper::getDestinationPOI_callback(void * pntr, int count, char ** data, char ** colName){
-    TraceBasedProbabilisticMobility * m = (TraceBasedProbabilisticMobility *) pntr;
+    TRAILSMobility * m = (TRAILSMobility *) pntr;
 
     m->finalPOI.x = atoi(data[0]);
     m->finalPOI.y = atoi(data[1]);
@@ -186,7 +198,7 @@ int sqlWrapper::getDestinationPOI_callback(void * pntr, int count, char ** data,
 
 
 int sqlWrapper::getFirstLastID(void * pntr, int src, int dest){
-    TraceBasedProbabilisticMobility * m = (TraceBasedProbabilisticMobility *) pntr;
+    TRAILSMobility * m = (TRAILSMobility *) pntr;
 
     std::vector <int> startToEnd;
     std::vector < std::vector <int> > edgesID;
@@ -232,9 +244,16 @@ int sqlWrapper::getFirstLastID(void * pntr, int src, int dest){
                         }
                     }
                 }
+                int rndm;
+                rndm = m->getIntUniform(0, (edgesID.size() - 1));
 
-                int rndm = rand()%edgesID.size(); //intuniform(0,edgesID.size()-1);
-
+                //if (edgesID.size() > 1) {
+                //    // rndm = rand()%edgesID.size(); //intuniform(0,edgesID.size()-1);
+                //    rndm = intuniform(0, (edgesID.size() - 1), usedRNG);
+                //    std::cout << "size B done " << "\n";
+                //} else {
+                //    rndm = 0;
+                //}
                 // Edge is chosen; Passing starting and ending ID of edge to node
                 m->firstID = edgesID[rndm][0];
                 m->lastID = edgesID[rndm][1];
@@ -246,7 +265,7 @@ int sqlWrapper::getFirstLastID(void * pntr, int src, int dest){
 }
 
 int sqlWrapper::getEdgeID_callback(void * unused, int count, char ** data, char ** colName){
-    TraceBasedProbabilisticMobility * m = (TraceBasedProbabilisticMobility *) unused;
+    TRAILSMobility * m = (TRAILSMobility *) unused;
 
     for (int i=0;i<count;i++){
         IDs.push_back(atoi(data[i]));
@@ -257,7 +276,7 @@ int sqlWrapper::getEdgeID_callback(void * unused, int count, char ** data, char 
 
 int sqlWrapper::getWaitTime(int dest, void * pntr){
     int count = 0;
-    TraceBasedProbabilisticMobility * m = (TraceBasedProbabilisticMobility *) pntr;
+    TRAILSMobility * m = (TRAILSMobility *) pntr;
     times.clear();
 
     sql = "SELECT TIME from POIS_WITH_TIME WHERE POI_ID = " + std::to_string(dest);
@@ -266,7 +285,8 @@ int sqlWrapper::getWaitTime(int dest, void * pntr){
 
     if(times.size()>=1){
         do{
-            int rnd = rand()%times.size(); //intuniform(1,wait.size())-1;
+            //int rnd = rand()%times.size(); //intuniform(1,wait.size())-1;
+            int rnd = m->getIntUniform(0, (times.size() - 1));
             m->waitT = times[rnd];
             count++;
         }while (m->waitT <= 0 && count < 9);
@@ -289,7 +309,7 @@ int sqlWrapper::execQuery(void* module, char * sql){
 }
 
 int sqlWrapper::queryCallback(void * unused, int count, char ** data, char ** colName){
-    TraceBasedProbabilisticMobility * m = (TraceBasedProbabilisticMobility *) unused;
+    TRAILSMobility * m = (TRAILSMobility *) unused;
     // Do something; Save something in m->whatever
     return 0;
 }

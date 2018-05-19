@@ -19,6 +19,10 @@
 *
 * @author : Anas bin Muslim (anas1@uni-bremen.de)
 *
+* Change History:
+* Asanga Udugama (adu@comnets.uni-bremen.de)
+* - name change
+* - use of OMNeT's RNG 
 */
 
 #ifndef INET_MOBILITY_SINGLE_SQLWRAPPER_H_
