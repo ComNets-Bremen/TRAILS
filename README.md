@@ -14,7 +14,7 @@ For Linux or MacOS:
 - Install `Python 2.7`
 - Clone this repository: `git clone -b https://github.com/ComNets-Bremen/TRAILS`
 - Change directory to `TRAILS`
-- Download and untar the latest version of `OMNeT++ INET' from `https://inet.omnetpp.org/Download.html`
+- Download and untar the latest version of `OMNeT++ INET` from `https://inet.omnetpp.org/Download.html`
 - Build INET: run `./build-INET.sh`
 - Build mobility model testing environment (MobilityModelCheck): `./build-MobilityModelCheck.sh`
 - Build TRAILS database and BonnMotion trace file from SFO Taxi Cab traces: run `cd ./Traces/SFO-Taxi-Cabs ; ./prepare-traces.sh ; cd ../../`
@@ -43,12 +43,18 @@ There are a set of codes in the log files that gives details about the number of
 
 Statistics computed from these coded values are as follows.
 
-- Average Neighbourhood Size - ANS / TNRT
-- Average Contact Duration - ACD / TNC
-- Total Number of Contacts - TNC
+- `Average Neighbourhood Size = ANS / TNRT`
+- `Average Contact Duration = ACD / TNC`
+- `Total Number of Contacts = TNC`
 
-Always use the last values listed in the logs.
+Always use the last values listed in the logs. To get the last values, run the following bash commands on a terminal.
 
+``` 
+
+grep "TNRT\|ANS\|TNC\|ACD" General-0-20180518-23:16:11-28993-log2.txt | tail
+
+```
+Replace the `General-0-20180518-23:16:11-28993-log2.txt` file with the log file in in your simulation folder.
 
 
 Questions or Comments
