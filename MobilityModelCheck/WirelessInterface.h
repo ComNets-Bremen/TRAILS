@@ -1,9 +1,3 @@
-//
-// Wireless interface that implements the Unit Disk Graph
-// model
-//
-// @date: 08-11-2015
-// @author: Asanga Udugama (adu@comnets.uni-bremen.de)
 
 #ifndef __MOBILITYMODELCHECK_WIRELESSINTERFACE_H_
 #define __MOBILITYMODELCHECK_WIRELESSINTERFACE_H_
@@ -35,6 +29,7 @@ class WirelessInterface : public cSimpleModule
         double contactStartTime;
     } NodeInfo;
 
+    int nodeIndex;
     double wirelessRange;
     string ownName;
     inet::IMobility *ownMobilityModule;

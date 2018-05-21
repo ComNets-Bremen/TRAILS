@@ -1,9 +1,3 @@
-//
-// Wireless interface that implements the Unit Disk Graph
-// model
-//
-// @date: 08-11-2015
-// @author: Asanga Udugama (adu@comnets.uni-bremen.de)
 
 #include "WirelessInterface.h"
 
@@ -12,6 +6,8 @@ Define_Module(WirelessInterface);
 void WirelessInterface::initialize(int stage)
 {
     if (stage == 0) {
+
+        nodeIndex = par("nodeIndex");
         wirelessRange = par("wirelessRange");
 
         ownName = getParentModule()->getFullName();
@@ -20,6 +16,13 @@ void WirelessInterface::initialize(int stage)
             if (ownMobilityModule != NULL) {
                 break;
             }
+        }
+
+        if (nodeIndex == 1) {
+            numContacts = 0;
+            sumContactDurations = 0.0;
+            sumNeighbourhoodSize = 0;
+            totNeighbourhoodReportingTimes = 0;
         }
 
     } else if (stage == 1) {

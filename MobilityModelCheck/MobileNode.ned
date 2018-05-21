@@ -18,7 +18,9 @@ module MobileNode
     submodules:
 
          // wifi adhoc interface
-        wirelessIfc: WirelessInterface;
+        wirelessIfc: WirelessInterface {
+            nodeIndex = nodeID;
+        }
 
         // mobility
         mobility: <mobilityType> like IMobility;

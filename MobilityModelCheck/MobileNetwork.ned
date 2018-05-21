@@ -8,6 +8,6 @@ network MobileNetwork
 
         // nodes of the network
         node[numNodes]: MobileNode {
-			nodeID = index;
+            nodeID = index;
         }
 }
