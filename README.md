@@ -29,8 +29,8 @@ Creating TRAILS Database from SFO Taxi Cab Traces
 Different TRAILS databased can be created with other parameters. Change the parameters given in the script `./prepare-traces.sh` in `./Traces/SFO-Taxi-Cabs` to suit requirements. 
 
 
-Interpreting results in Simulation Output Files 
------------------------------------------------
+Collecting and creating results from Simulation Output Files 
+------------------------------------------------------------
 
 There are a set of codes in the log files that gives details about the number of contacts made during a simulations. The following list gives these codes and their meanings.
 
@@ -50,12 +50,12 @@ Statistics computed from these coded values are as follows.
 Always use the last values listed in the logs. To get the last values, run the following bash commands on a terminal.
 
 ``` 
-
 grep "TNRT\|ANS\|TNC\|ACD" General-0-20180518-23:16:11-28993-log2.txt | tail
-
 ```
+
 Replace the `General-0-20180518-23:16:11-28993-log2.txt` file with the log file in in your simulation folder.
 
+A python script has been written to collect the above mentioned results (`results-collect.py`) and it is available at `Scripts/Results-Collect`.
 
 Questions or Comments
 ---------------------
