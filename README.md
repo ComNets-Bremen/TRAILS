@@ -2,12 +2,12 @@
 
 Modeling mobility is a key aspect when simulating different types of networks and a large number of various models has emerged in the last years. They are typically either trace-based, where GPS recordings are re-run in simulation, or synthetic models, which describe mobility with formal methods. Both concepts have advantages and disadvantages. For example, trace-based models are very in flexible in terms of simulation scenarios but have realistic behaviour, while synthetic models are very  flexible, but lack realism. To overcome these these issues, a mobility model by the name of TRAILS (TRAce-based ProbabILiStic Mobility Model) has been developed. This model spans the gap between both families and combines their advantages into a single model. This repository contains an implementation of this mobility model in OMNeT++, a C++ based discrete event simulator.
 
-The immediately following section is a `tl;dr` for anyone who wishes to get it up and running after creating a simple TRAILS database. 
+The immediately following section is the procedure for anyone who wishes to get TRAILS up and running after. 
 
-tl;dr
------
+TRAILS Setup Procedure
+----------------------
 
-For Linux or MacOS:
+TRAILS is uses the simulation environment of the OMNeT++ simulator and the scripts use Python and Bash. It is only meant for Linux or MacOS environments. The procedure for setting up and running TRAILS is given below.
 
 - Open a console (terminal) 
 - Install and setup OMNeT++ v5.2.1 or higher (use OMNeT++ installation Guide)
@@ -29,7 +29,7 @@ Creating TRAILS Database from SFO Taxi Cab Traces
 Different TRAILS databased can be created with other parameters. Change the parameters given in the script `./prepare-traces.sh` in `./Traces/SFO-Taxi-Cabs` to suit requirements. 
 
 
-Collecting and creating results from Simulation Output Files 
+Collecting and Creating Results from Simulation Output Files 
 ------------------------------------------------------------
 
 There are a set of codes in the log files that gives details about the number of contacts made during a simulations. The following list gives these codes and their meanings.
